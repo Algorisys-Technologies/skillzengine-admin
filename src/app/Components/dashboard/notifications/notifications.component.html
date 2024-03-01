@@ -1,0 +1,47 @@
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="text-capitalize mb-0 mt-0">Requests for Retest</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                    <table class="table table-bordereless table-hover">
+                        <thead class="thead-bg font-weight-light">
+                            <tr>
+                                <td>User</td>
+                                <td>Test</td>
+                                <td>Test Attempted Date</td>
+                                <td>Retest Request Date</td>
+                                <td>Retest Reason</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="requests.length<=0">
+                                <td colspan="6">No Record Found</td>
+                            </tr>
+                            <tr *ngFor="let list of requests">
+                                <td>{{list.userName}}</td>
+                                <td>{{list.testName}}</td>
+                                <td>{{ list.testDate && list.testDate.substring(0,10)}}</td>
+                                <td>{{ list.requestDate && list.requestDate.substring(0,10)}}</td>
+                                <td>{{list.reason}}</td>
+                                <td><button *ngIf="!list.allowRetest" class="btn btn-md btn-info w-100" (click)="allowRetest(list.testid,list.userid)">Allow
+                                        Retest</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="section">
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="text-white">Assign Test to User</h4>
+                    </div>
+                    <div class="card-body">
+                        <span [ngClass]="showMessage ? 'text-success' : 'text-danger'" class="text-success">{{message}}</span><br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <form [formGroup]="assignTestForm" (ngSubmit)="onSubmit()" class="border bg-light pt-2 pb-2">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Group</label>
+                                            <select class="form-control mleft5" id="groupid" name="groupId"
+                                                formControlName="groupId" (change)="selecteGroup($event.target.value)">
+                                                <option *ngFor="let group of  grpList" [ngValue]="group._id">
+                                                    {{group.name}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="submitted && f.groupId.errors" class="text-danger">
+                                                <div *ngIf="f.groupId.errors.required">
+                                                    Group is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Select Test</label>
+                                            <select class="form-control mleft5" id="testId" name="testId"
+                                                formControlName="testId" (change)="getTestById()">
+                                                <option *ngFor="let test of  tests" [ngValue]="test._id">
+                                                    {{test.testName}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="submitted && f.testId.errors" class="text-danger">
+                                                <div *ngIf="f.testId.errors.required">
+                                                    Test is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label>Start Date Of Test</label>
+                                            <input type="date" class="form-control" id="startDate" name="startDate"
+                                                formControlName="startDate" [ngClass]="{'is-invalid': submitted && f.startDate.errors }">
+                                            <div *ngIf="submitted && f.startDate.errors" class="text-danger">
+                                                <div *ngIf="f.startDate.errors.required">Start Date is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label>End Date Of Test</label>
+                                            <input type="date" class="form-control" id="endDate" name="endDate"
+                                                formControlName="endDate" [ngClass]="{'is-invalid': submitted && f.endDate.errors }"
+                                                placeholder="Enter test minute">
+                                            <div *ngIf="submitted && f.endDate.errors" class="text-danger">
+                                                <div *ngIf="f.endDate.errors.required">Last Date is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-info w-100">Assign Test to Users</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                             <div class="col-md-7">
+                                        <app-datatable  [tableData]='filteredData' [columns]='columns'  (onSelect)='onSelect($event)' [userSelections] ='userSelections' [tblbtns]='tblbtns'></app-datatable>
+                            </div>
+                            <!-- <div class="col-md-7">
+                                <table class="table table-borderedless table-responsive-sm table-hover">
+                                    <thead class="bg-info text-white">
+                                        <tr>
+                                            <th>Sr. No</th>
+                                            <th>User Name</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let user of  users; index as i">
+                                        <tr>
+                                            <td>{{i + 1}}</td>
+                                            <td>
+                                                <div class="form-check form-check-inline">
+                                                    {{user.name}}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input float-right" name="users"
+                                                    value="{{user}}" [checked]="userSelections && userSelections.indexOf(user._id) > 0 ? true : false"
+                                                    (change)="selecteUser(user,$event,i)" />
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

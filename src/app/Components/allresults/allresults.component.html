@@ -1,0 +1,132 @@
+<div class="section">
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4>All Results</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="" class=" ">Select User </label>
+                                </div>
+                              </div>
+                            <div class="col-md-6"> 
+                                <div class="form-group">
+                                    <select class="form-control" (change)="onSelectUser($event.target.value)" id="category" name="category">
+                                        <option *ngFor="let user of  allusers" value="{{user._id}}">
+                                          {{user.name}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"> 
+                                    <div class="form-group">
+                                <input type="button" class="btn btn-info btn-md btnshowall mb10" (click)="getuserTests()" value="Show Result" />
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                    <app-datatable  [tableData]='userTests' [columns]='columns'   [tblbtns]='tblbtns'></app-datatable>
+                    <!-- <table class="table table-borderedless table-rsponsive-sm table-hover"> 
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Test Name</th>
+                                <th>Marks</th>
+                                <th>Result Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let ut of userTests;index as i">
+                                <td>{{i}}</td>
+                                <td>{{ut.testName}}</td>
+                                <td class="text-center" *ngIf="ut.Marks =='NaN'">0.00%</td>
+                                <td class="text-center" *ngIf="ut.Marks !=='NaN'">{{ut && ut.Marks}}</td>
+                                <td *ngIf="(ut.Marks>0?true:false)" class="text-center">
+                                    <button class="btn w-100 btn-info"  [routerLink]="['../testdetails', ut.testId,ut.userId]">
+                                        Details
+                                    </button>
+                                </td>
+                                <td *ngIf="!(ut.Marks>0?true:false)" class="text-center">
+                                </td>
+                              </tr> 
+                        </tbody>
+                    </table> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <section id="results">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1  allresults">
+        <h3 class="text-center"><strong>All Results</strong></h3>
+        <hr class="mt0">
+        <div class="col-sm-12 col-md-8 col-lg-6">
+          <div class="row">
+            <div class="flex-wrapper">
+              <label for="" class=" ">Select User </label>
+              
+
+              <select class="form-control rounded-0" (change)="onSelectUser($event.target.value)" id="category" name="category">
+                <option *ngFor="let user of  allusers" value="{{user._id}}">
+                  {{user.name}}
+                </option>
+              </select>
+              <input type="button" class="btn btn-info btn-md btnshowall mb10 " (click)="getuserTests()" value="Show Result" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1 ">
+        <div ng-show="IsVisible">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Sr No.</th>
+                  <th>Test Name</th>
+                  <th class="text-center">Marks</th>
+                  <th class="text-center"> Result Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ut of userTests;index as i">
+                  <td>{{i}}</td>
+                  <td>{{ut.testName}}</td>
+                  <td class="text-center">{{ut.Marks}}</td>
+                  <td *ngIf="(ut.Marks>0?true:false)" class="text-center"><button class="btn  btn-lg btn-warning" (click)="goToDetails(ut)">Details</button></td>
+                </tr> 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+</section> -->

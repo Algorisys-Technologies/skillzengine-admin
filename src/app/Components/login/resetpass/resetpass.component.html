@@ -1,0 +1,58 @@
+<div class="container">
+      <div class="row">
+            <div class="col-lg-6 offset-md-3 col-md-8 offset-sm-2 mt-5">
+                  <h3 class="text-center"><img src="assets/img/logo.svg" class="w-25"></h3>
+            </div>
+      </div>
+      <div id="loginbox" class="mainbox col-lg-6 offset-md-3 col-md-8 offset-sm-2 mt-3">
+            <div class="card effect5">
+                  <div class="card-header bg-warning">
+                        <div class="h3 text-capitalize text-center">reset password</div>
+                  </div>
+                  <div class="card-body ">
+                        <div style="display: none;" id="login-alert" class="alert alert-danger col-md-12">
+                              <span *ngIf="error">{{error}}</span>
+                        </div>
+                        <form id="loginform" [formGroup]="frmReset" novalidate id="reset_form" (ngSubmit)="submit(frmReset.value, frmReset.valid, $event)">
+                              <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                          <input class="form-control" name="password" formControlName="newpassword"
+                                                placeholder="Password" type="password" required [ngClass]="{ 'is-invalid': submitted  && (f.newpassword.errors?.required || f.newpassword.errors?.pattern) }">
+                                          <div *ngIf="submitted && f.newpassword.errors?.required" class="invalid-feedback">Password
+                                                is
+                                                required</div>
+                                          <div *ngIf="submitted && f.newpassword.errors?.pattern" class="invalid-feedback">Password
+                                                should
+                                                contain min. 8 characters & atleast 1 numeric & 1 special character.</div>
+                                    </div>
+                              </div>
+                              <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                          <input class="form-control" name="conpassword" formControlName="conpassword"
+                                                placeholder="Password" type="password" required [ngClass]="{ 'is-invalid': submitted  && (f.conpassword.errors?.required || (f.newpassword !== f.conpassword))}">
+                                          <div *ngIf="submitted && f.conpassword.errors?.required" class="invalid-feedback">Password
+                                                is
+                                                required</div>
+                                          <div *ngIf="submitted && (f.newpassword !== f.conpassword)" class="invalid-feedback">Passwords
+                                                don't match</div>
+                                    </div>
+                              </div>
+                              <div class="form-group mt-3">
+                                    <div class="col-md-12 controls"> <button class="btn btn-success">Reset Password</button>
+                                    </div>
+                              </div>
+                        </form>
+                  </div>
+            </div>
+      </div>
+</div>
+<div ui-view="footer_view" class="ng-scope"></div>
+<div class="footer">
+      <div class="container">
+            <div class="row">
+                  <div class="col-md-12">
+                        <p class="text-center">Copyright 2018 - Algorisys Technologies Pvt. Ltd.</p>
+                  </div>
+            </div>
+      </div>
+</div>

@@ -1,0 +1,14 @@
+.scroll-div {
+    height: 300px;
+    overflow-y: auto;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+ol {
+    padding-left: 20px;
+}
+
+.admin-user{
+    line-height: 35px;
+}

@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+</div>
+<div class="modal-body">
+  {{ message }}
+</div>
+<div class="modal-footer" *ngIf="showBoth">
+  <button type="button" class="btn bg-light w-100" (click)="decline()">{{ btnCancelText }}</button>
+  <button type="button" class="btn bg-info w-100 text-white" (click)="accept()">{{ btnOkText }}</button>
+</div>
+
+<div class="modal-footer" *ngIf="!showBoth">
+  <button type="button" class="btn btn-primary" (click)="accept()">{{ btnOkText }}</button>
+</div>

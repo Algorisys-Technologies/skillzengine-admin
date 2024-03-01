@@ -1,0 +1,54 @@
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-warning">
+          <h4>User wise result for {{resultData[0]&&resultData[0].testName}}</h4>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="" class=" ">Select user </label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select (change)="onSelectUser($event.target.value)" class="form-control">
+                    <option value="">All</option>
+                    <option *ngFor="let item of resultData" class="selectpicker" value="{{item.userId}}">{{item.userName}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input type="button" class="btn btn-info btn-md btnshowall mb10" (click)="showResults()" value="Show Result" />
+                </div>
+              </div>
+            </div>
+          </form>
+          <table class="table table-borderedless table-rsponsive-sm table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th>Sr no.</th>
+                <th>User name</th>
+                <th>Marks%</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let list of resultData; index as i">
+                <td>{{i+1}}</td>
+                <td>{{list.userName}}</td>
+                <td>{{list.Marks}}</td>
+                <td><button class="btn  btn-lg btn-warning" (click)="details(list.testId,list.userId)">Details</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

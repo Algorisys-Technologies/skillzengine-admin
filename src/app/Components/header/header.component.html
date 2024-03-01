@@ -1,0 +1,85 @@
+<nav [ngClass]="[scrollClass]">
+    <div>
+
+        <div class="sidenav-header d-flex align-items-center justify-content-center">
+
+            <div class="sidenav-header-inner text-center">
+                <h4>DASHBOARD</h4>
+            </div>
+
+            <div class="sidenav-header-logo"><a [routerLink]="[{ outlets: { sidemenu: ['dashboard'] } }]" class="brand-small text-center">
+                    <span *ngIf="showMenu" class="text-primary dash">DASHBOARD</span></a>
+                <a id="toggle-btn" (click)="toggleMenu()" href="javascript:void(0)" class="menu-btn mt-1 ml-2 dash-btn">
+                    <i class="dash-btn icon-bars"></i>
+                </a></div>
+        </div>
+
+        <div class="main-menu">
+            <ul id="side-main-menu" class="side-menu list-unstyled">
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['dashboard'] } }]"> <i class="icon-home"></i>Dashboard
+                    </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['user'] } }]"> <i class="fa fa-user"></i>Users </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['allquestions'] } }]"> <i class="fa fa-question-circle"></i>Questions
+                    </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['createtest'] } }]"> <i class="fa fa-plus-square"></i>Create
+                        a Test</a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['showtest'] } }]"> <i class="icon-home"></i>Show Test
+                    </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['assigntest'] } }]"> <i class="icon-form"></i>Assign
+                        Test </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['testwiseresults'] } }]"> <i class="fa fa-bar-chart"></i>Results
+                        Test-wise </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['allresults'] } }]"> <i class="fa fa-bar-chart"></i>All
+                        Results </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['changepassword'] } }]"> <i class="fa fa-unlock-alt"></i>Change
+                        Password </a></li>
+                <li><a [routerLink]="[{ outlets: { sidemenu: ['instructions'] } }]"> <i class="fa fa-bar-chart"></i>Quiz
+                        Instructions </a></li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div [ngClass]="[pageClass]">
+    <header class="header">
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <div class="navbar-header">
+
+                        <a id="toggle-btn" (click)="toggleMenu()" href="javascript:void(0)" class="menu-btn mt-1 ml-2 dash-btn d-sm-inline-block d-lg-none">
+                            <i class="dash-btn icon-bars"></i>
+                        </a>
+
+                        <a class="navbar-brand">
+                            <img src="assets/img/logo.svg">
+                        </a>
+                    </div>
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <li class="nav-item dropdown"><a id="languages" rel="nofollow" data-target="#" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" class="nav-link language"><span class="d-none d-sm-inline-block"><img
+                                        src="assets/img/user.png"> {{userName}}</span></a>
+
+                        </li>
+                        <li class="nav-item"><a (click)="logout()" class="nav-link logout"> <span class="d-none d-sm-inline-block">
+                                    Logout</span><i class="fa fa-sign-out text-danger"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <router-outlet name='sidemenu'></router-outlet>
+
+    <footer class="main-footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p>Algorisys Technologies Pvt. Ltd. &copy; 2018-2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <p>Design by <a href="www.algorisys.com" class="external">ALGORISYS</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

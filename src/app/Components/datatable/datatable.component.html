@@ -1,0 +1,94 @@
+<div>
+  <div id="infinite-scroller" appInfiniteScroller scrollPercent="90" immediateCallback="true" [scrollCallback]="scrollCallback"
+    style="height: 300px; overflow-y: scroll;">
+    <table class="table table-borderedless table-rsponsive-sm table-hover">
+      <thead class="thead-bg">
+        <tr>
+          <th>Sr. No. </th>
+          <th style="cursor: pointer;" *ngFor="let key of header" (click)="toggleSort(key.name)">{{key.label}}
+            <i *ngIf='key.sort && !reverse' class="fa fa-angle-double-down"></i>
+            <i *ngIf='key.sort && reverse' class="fa fa-angle-double-up"></i>
+          </th>
+
+          <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+      <tbody>
+        <tr>
+          <td></td>
+          <td *ngFor="let key of header">
+            <form id="demo-2" class="form-group">
+              <input type="search" (input)="search(key.name, $event)" placeholder="Search" name="projectSearch" class="form-control rounded-0"
+                value="">
+            </form>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let t of testPagedSearchResult ; index as i">
+          <td>{{i + 1}} </td>
+          <td *ngFor="let key of header">
+            {{ t[key.name] }}
+          </td>
+          <td>
+          <ng-container *ngFor="let btn of tblbtns">
+            <a *ngIf="!btn.ishide && !btn.isChkBox"  
+                    href="javascript:;" 
+                    (click)= 'this[btn.action](t)'>
+                    <i [ngClass]="btn.class"></i>
+            </a>
+            <a *ngIf="!btn.ishide && btn.isChkBox">
+                    <input  type="checkbox" 
+                    class=" float-right" 
+                    name="testPagedSearchResult"
+                    value="{{t}}" 
+                    [checked]="userSelections && userSelections.indexOf(t._id) > 0 ? true : false"  
+                    [checked]="selectedQuestions && selectedQuestions.indexOf(t._id)>-1"
+                    (change)="selecteUser(t,$event,i)"/>
+            </a>
+             <!-- <a *ngIf="!btn.ishide && btn.isLink">
+                <input  type="button" 
+                class=" t.Marks>0 ? btn w-100 btn-info : t.iscalculated==true ?"
+                value = "{{btn.title}}"
+                [routerLink] = "t.Marks>0 ? [btn.routeTo, t.testId,t.userId] 
+                               : t.iscalculated==true ? [btn.routeTo, t._id]
+                               : null"/>
+           
+              </a> -->
+              
+            <a *ngIf="!btn.ishide && btn.isLink && t.Marks>0" class="w-100">
+              <input  type="button" 
+              class="btn btn-md btn-link w-100"
+              value = "{{btn.title}}"
+              [routerLink]="[btn.routeTo, t.testId,t.userId]"/>
+            </a>
+             
+            <a *ngIf="!btn.ishide && btn.isLink && t.iscalculated==true" class="w-100">
+                <input  type="button" 
+                class="btn btn-md btn-link w-100"
+                value = "{{btn.title}}"
+                [routerLink]="[btn.routeTo, t._id]"/>
+            </a>
+            <a *ngIf="!btn.ishide && btn.isLink && t.iscalculated==false"  class="w-100">
+                    <input  type="button" 
+                    class="btn btn-md btn-link w-100 text-warning" 
+                    value = "Calculate"
+                    (click)= 'this[btn.action](t._id)'/>
+            </a>
+        </ng-container>
+      </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+ 
+  </div>
+  <div>
+    <i><small>Total No. of Records : {{this.filteredData?.length}}</small></i>
+  </div>
+</div>

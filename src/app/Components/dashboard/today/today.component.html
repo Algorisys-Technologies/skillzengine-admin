@@ -1,0 +1,42 @@
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="text-capitalize mb-0 mt-0">Today's Tests</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordereless">
+                        <thead class="thead-bg">
+                            <tr>
+                                <td>Name of the Test</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let test of newTodaytestlist">
+                                <td>
+                                    <span (click)="test.expand=!test.expand">
+                                        <i class="fa fa-plus" *ngIf="!test.expand"> {{test.testName}}</i>
+                                        <i class="fa fa-minus" *ngIf="test.expand"> {{test.testName}}</i>
+                                    </span>
+                                    <table *ngIf="test.expand" class="table table-bordereless">
+                                        <tr *ngFor="let user of todaytestlist | filter: test.testName">
+                                            <td> {{user.userName}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="col-sm-12" *ngIf="todaytestlist.length<=0">No Record Found</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

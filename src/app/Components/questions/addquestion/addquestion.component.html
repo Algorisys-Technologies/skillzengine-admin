@@ -1,0 +1,178 @@
+<div class="container-fluid mt-3">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-info">
+          <h4 class="text-capitalize text-white">{{pageTitle}}</h4>
+        </div>
+        <div class="card-body">
+          <span [ngClass]="showMessage ? 'text-success' : 'text-danger'" class="text-success">{{savedMessage}}</span><br />
+          <form [formGroup]="addQuestionForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Category</label>
+                  <select class="form-control" id="category" name="category" formControlName="category">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of categories" value="{{category.name}}">
+                      {{category.name}}
+                    </option>
+                  </select>
+                  <div *ngIf="submitted && f.category.errors" class="text-danger">
+                    <div *ngIf="f.category.errors.required">Select category</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Question text</label>
+                  <textarea maxlength="500" class="form-control" id="qustiontext" name="qustiontext" formControlName="qustiontext"
+                    [ngClass]="{ 'is-invalid': submitted && f.qustiontext.errors }" placeholder="Please enter question text"></textarea>
+                  <div *ngIf="submitted && f.qustiontext.errors" class="text-danger">
+                    <div *ngIf="f.qustiontext.errors.required">Question text is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input class="form-control-file" id="files" formControlName="files" type="file" accept="image/*"
+                    (change)="onFilesChanged($event)" />
+                </div>
+              </div>
+              <div class="col-md-12" *ngFor="let file of filesArray">
+                <div class="input-group-append">
+                  <span>{{file}}</span> <span class="input-group-text bg-danger px-4 text-white" (click)="removeFile(file)"
+                    id="basic-addon2"> x </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group mt-3">
+                  <label class="mr-4 text-capitalize">type</label>
+
+                  <div class="form-check form-check-inline" *ngFor="let type of questionTypes">
+                    <input class="form-check-input" type="radio" value="{{type}}" (change)="onTypeChange(type)" id="queType"
+                      name="queType" formControlName="queType" [ngClass]="{ 'is-invalid': submitted && f.queType.errors}">
+                    <label class="form-check-label" for="inlineRadio0">{{type}}</label>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="questionType == 'numeric'">
+              {{mcq()}}
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Enter Answer</label>
+                  <input type="number" [required]="questionType == 'numeric'" class="form-control" id="answer" name="answer"
+                    formControlName="answer" [ngClass]="{ 'is-invalid': submitted && f.answer.errors }">
+                  <div *ngIf="submitted && f.answer.errors" class="text-danger">
+                    <div *ngIf="f.answer.errors.required">Answer is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="questionType == 'boolean'">
+              {{mcq()}}
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Enter Answer</label><br>
+                  <div class="form-check form-check-inline" *ngFor="let ans of boolAnsArr">
+                    <input class="form-check-input" type="radio" [required]="questionType == 'boolean'" value="{{ans}}"
+                      id="answer" name="answer" formControlName="answer" [ngClass]="{ 'is-invalid': submitted && f.queType.errors}">
+                    <label class="form-check-label" for="inlineRadio12">{{ans}}</label>
+                  </div>
+                  <div *ngIf="submitted && f.answer.errors" class="text-danger">
+                    <div *ngIf="f.answer.errors.required">Answer is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="questionType == 'text'">
+              {{mcq()}}
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Enter Answer</label>
+                  <input type="text" [required]="questionType == 'text'" class="form-control" id="answer" name="answer"
+                    formControlName="answer" [ngClass]="{ 'is-invalid': submitted && f.answer.errors }" placeholder="Please enter a answer">
+                  <div *ngIf="submitted && f.answer.errors" class="text-danger">
+                    <div *ngIf="f.answer.errors.required">Answer is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questionType == 'mcq'">
+              {{mcq()}}
+              <div formArrayName="queitems" *ngFor="let item of addQuestionForm.controls.queitems.controls; let i = index;">
+                <div [formGroupName]="i">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <input type="text" placeholder="Enter Question Value" class="form-control" id="mcqque" required
+                          maxlength="250" [ngClass]="{ 'is-invalid': submitted  && item.hasError('required', 'mcqque') }"
+                          formControlName="mcqque" />
+                        <div class="input-group-append">
+                          <span class="input-group-text bg-danger px-4 text-white" *ngIf="i>0" (click)="removeQueChoice(i)"
+                            id="basic-addon2"> x </span>
+                        </div>
+                        <div *ngIf="submitted && item.hasError('required', 'mcqque')" class="invalid-feedback">Question
+                          is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mt-2 ">
+                    <span class="btn btn-info float-right" *ngIf="(i === addQuestionForm.controls.queitems.length-1)"
+                      (click)="addNewQueChoice()" id="basic-addon2"> Add Question </span>
+                  </div>
+                </div>
+              </div>
+              <div formArrayName="ansitems" *ngFor="let item of addQuestionForm.controls.ansitems.controls; let i = index;">
+                <div [formGroupName]="i">
+                  <div class="row mt-3">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <input type="text" placeholder="Enter answer Value" class="form-control" id="mcqans" required
+                          maxlength="250" [ngClass]="{ 'is-invalid': submitted  && item.hasError('required', 'mcqans') }"
+                          formControlName="mcqans" />
+                        <div *ngIf="submitted && item.hasError('required', 'mcqans')" class="invalid-feedback">Answer
+                          is required</div>
+                        <div class="input-group-append">
+                          <span *ngIf="i>0" (click)="removeAnsChoice(i)" class="input-group-text bg-danger px-4 text-white">x</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mt-2 ">
+                    <span class="btn btn-info float-right" *ngIf="(i === addQuestionForm.controls.ansitems.length-1)"
+                      (click)="addNewAnsChoice()">Add Answer</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-3 offset-md-6">
+
+                <button type='submit' class="btn btn-info w-100">Save</button>
+              </div>
+              <div class="col-md-3">
+                <button type="button" (click)="cancle()" class="btn btn-light border w-100">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="section">
+    <div *ngIf='createMaster'>
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-warning">
+                            <h4 class="text-capitalize text-center" id="exampleModalLabel">{{title}}</h4>
+                        </div>
+                        <span class="text-success">{{createMessage}}</span><br />
+                        <div class="card-body">
+                            <form [formGroup]="grpForm" (ngSubmit)="onSubmit()">
+                                <div class="row">
+                                    <div class="col-md-6 offset-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+                                                placeholder="Enter Group Name">
+                                            <div *ngIf="submitted && f.name.errors" class="text-danger">
+                                                <div *ngIf="f.name.errors.required">Group name is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 offset-md-3">
+
+                                        <button type="submit" class="btn btn-info text-capitalize w-100">{{captionButton}}</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-warning text-capitalize w-100" (click)="goBack()">close</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-3" *ngIf='!createMaster'>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-warning pt-3 pb-0">
+                        <h4 class="text-capitalize" style="line-height:37px;">test group <span class="float-right h5 font-weight-normal">create
+                                group <i class="fa fa-plus-square ml-2 btn btn-info" type="button" (click)="showgroupCreateWindow()"
+                                    data-toggle="modal" data-target="#exampleModal"></i></span></h4>
+                        <span class="text-success">{{message}}</span><br />
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderedless table-responsive-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Sr No</th>
+                                    <th>Group Name</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let grp of  grpList ; index as i">
+                                    <td>{{ i + 1 }}</td>
+                                    <td> {{grp.name}}</td>
+                                    <td><a><i class="fa fa-edit text-warning" (click)="showgroupEditWindow(grp)"
+                                                data-toggle="modal"></i></a></td>
+                                    <td><a><i class="fa fa-trash text-danger" (click)="deleteGroup(grp)" data-toggle="modal"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 offset-md-9">
+                <button type="button" class="btn btn-warning w-100" data-dismiss="modal" (click)="gotoParent()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 offset-md-3 col-md-8 offset-sm-2 mt-5">
+      <h3 class="text-center"><img src="assets/img/logo.svg" class="w-25"></h3>
+    </div>
+  </div>
+  <div id="loginbox" class="mainbox col-lg-6 offset-md-3 col-md-8 offset-sm-2 mt-3">
+    <div class="card">
+      <div class="card-header bg-warning">
+        <div class="h3 text-capitalize text-center"> Forgot password</div>
+      </div>
+      <div class="card-body pt-4 pb-4">
+        <div class="card-title">
+          To reset your password, enter the email address you use to sign in
+        </div>
+        <form class="mt-2" [formGroup]="frmForgotPass" novalidate id="forgotPass" (ngSubmit)="submit(frmForgotPass.value, frmForgotPass.valid, $event)">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                  </div>
+                  <input type="email" class="form-control" placeholder="Enter Email" placeholder="Enter email" name="semail"
+                    type="email" formControlName="semail" required [ngClass]="{ 'is-invalid': submitted  && frm.semail.errors && (frm.semail.errors.required || frm.semail.errors.email) }">
+                  <div *ngIf="submitted && frm.semail.errors && frm.semail.errors.required" class="invalid-feedback">Email
+                    is required</div>
+                  <div *ngIf="submitted && frm.semail.errors && frm.semail.errors.email" class="invalid-feedback">Email
+                    is invalid</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <button class="btn btn-success w-100">Submit</button>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-warning w-100" (click)="onCancel()">Close</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="section">
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="text-capitalize mb-0 mt-0">Total Test</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                             <app-datatable  (onCalculateTestResults)='onCalculateTestResults($event)' [tableData]='AllTests' [columns]='columns'   [tblbtns]='tblbtns'></app-datatable> 
+                        <!-- <table class="table table-bordereless table-hover">
+                            <thead class="thead-bg">
+                                <tr>
+                                    <td>Name of the Test</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let test of AllTests">
+                                    <td>
+                                        <span>{{test.testName}}</span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="test.iscalculated==false" class="w-100"><a type="button" class="btn btn-md btn-warning w-100 text-dark"
+                                                (click)="calculateTestResults(test._id)">Calculate</a></span>
+                                        <span></span> <span *ngIf="test.iscalculated==true" class="w-100"><a type="button"
+                                                class="btn btn-md btn-info w-100" [routerLink]="['../testresults', test._id]">Result</a></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+                        <span class="col-sm-12" *ngIf="AllTests.length<=0">No Record Found</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

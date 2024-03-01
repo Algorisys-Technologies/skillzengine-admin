@@ -1,0 +1,56 @@
+<div class="container">
+      <div class="row">
+            <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 mt-5">
+                  <h3 class="text-center"><img src="assets/img/logo.svg" class="w-25"></h3>
+            </div>
+      </div>
+   
+      <div id="loginbox" class="mainbox col-lg-6 offset-lg-3 col-md-8 offset-md-2 mt-3">
+            <div class="card effect5">
+                  <div class="card-header bg-warning">
+                        <div class="h3 text-capitalize text-center">login</div>
+                  </div>
+                  <div class="card-body ">
+                        <span [ngClass]="errorflg ? 'text-danger' : 'text-success'" class="text-success">{{error}}</span><br />
+                        <form id="loginform" [formGroup]="frmLogin" novalidate id="login_form" (ngSubmit)="submit(frmLogin.value, frmLogin.valid, $event)">
+                              <div class="col-md-12">
+                                    <div class="form-group">
+                                          <input type="email" class="form-control" name="userName" formControlName="userName"
+                                                placeholder="Email" required [ngClass]="{ 'is-invalid': submitted  && (f.userName.errors?.required || f.userName.errors?.email )}">
+                                          <div *ngIf="submitted  && f.userName.errors?.required" class="invalid-feedback">Email
+                                                is required</div>
+                                          <div *ngIf="submitted  && f.userName.errors?.email" class="invalid-feedback">Email
+                                                is invalid</div>
+                                    </div>
+                              </div>
+                              <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                          <input class="form-control" name="password" formControlName="password"
+                                                placeholder="Password" type="password" required [ngClass]="{ 'is-invalid': submitted  && f.password.errors?.required }">
+                                          <div *ngIf="submitted && f.password.errors?.required" class="invalid-feedback">Password
+                                                is
+                                                required</div>
+                                    </div>
+                              </div>
+                              <div class="form-group mt-3">
+                                    <div class="col-md-12 controls">
+                                          <button class="btn btn-success">Login</button>
+                                          <a class="forgot-pwd-link" [routerLink]="['/forgotpass']"> Forgot password?</a>
+                                    </div>
+                              </div>
+                        </form>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<div ui-view="footer_view" class="ng-scope"></div>
+<div class="footer">
+      <div class="container">
+            <div class="row">
+                  <div class="col-md-12">
+                        <p class="text-center mb-0">Copyright 2018 - Algorisys Technologies Pvt. Ltd.</p>
+                  </div>
+            </div>
+      </div>
+</div>

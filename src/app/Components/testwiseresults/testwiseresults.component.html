@@ -1,0 +1,72 @@
+<div class="section">
+      <div class="container-fluid mt-3">
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="card">
+                              <div class="card-header bg-info">
+                                    <h4 class="text-white">Results <span class="text-light font-weight-normal h5">(Test-wise)</span></h4>
+                              </div>
+                              <div class="card-body">
+                                    <div class="row">
+                                          <div class="col-md-5">
+                                                <form method="post" action="#" class="border bg-light pt-2 pb-2">
+                                                      <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                  <label>Group</label>
+                                                                  <select class="form-control" name="groupids"
+                                                                        [(ngModel)]="groupids" (change)="GetUser()">
+                                                                        <option value="">All</option>
+                                                                        <option *ngFor="let group of  grpList"
+                                                                              [ngValue]="group._id">
+                                                                              {{group.name}}
+                                                                        </option>
+                                                                  </select>
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                  <label>Test</label>
+                                                                  <select [(ngModel)]="selTest" name="selTest" class="form-control">
+                                                                        <option *ngFor="let item of  items" [ngValue]="item._id">
+                                                                              {{item.testName}}
+                                                                        </option>
+                                                                  </select>
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                  <button type="button" class="btn btn-info w-100"
+                                                                        (click)="resultshow(selTest)">Show
+                                                                        Result</button>
+                                                            </div>
+                                                      </div>
+                                                </form>
+                                          </div>
+                                          <div class="col-md-7">
+                                                <div class="table-responsive-sm">
+                                                            <app-datatable  [tableData]='resultData' [columns]='columns'  [tblbtns]='tblbtns'></app-datatable>
+                                                      <!-- <table class="table table-borderedless table-hover">
+                                                            <thead class="bg-info text-white">
+                                                                  <tr>
+                                                                        <th>Sr. No.</th>
+                                                                        <th>User Name</th>
+                                                                        <th>Percentage</th>
+                                                                  </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                  <tr *ngFor="let list of resultData; index as i">
+                                                                        <td>{{ i + 1 }}</td>
+                                                                        <td>{{list.userName}}</td>
+                                                                        <td>{{list.Marks}}%</td>
+                                                                  </tr>
+                                                            </tbody>
+                                                      </table> -->
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>

@@ -1,0 +1,206 @@
+
+body{
+    overflow-x : hidden;
+}
+
+
+ol {
+    padding-left: 30px;
+}
+
+div.logo-holder {
+      text-align: center;
+}
+div.logo-holder .company_logo {
+ display: inline-block;
+    text-align: center;
+    width: 200px;
+    height: 80px;
+    margin: auto;
+    padding-top: 30px;
+}
+
+.test-timer {
+       background: #95e3ec;
+    padding: 5px;
+    border: 1px solid #9E9E9E;
+}
+        .ngdialog.ngdialog-theme-plain {
+            /*padding-bottom: 100px !important;*/
+            padding-top: 1% !important;
+        }
+
+
+        /* For the navigation menu  */
+nav.navbar-default {
+        background-color: #fff;
+    border-color: #fff;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: #FFF;
+}
+
+ .navbar-default .navbar-collapse {
+    height: auto;
+    padding-right: 0px;
+ }
+
+  /****************************************************************
+            *              Toggable menu
+            ****************************************************************/
+
+.logout {
+color: #000;
+    text-transform: capitalize;
+    padding-right: 10px;
+}
+.greeting {
+    margin-left: 10px;
+    color: #000;
+    font-size: 16px;
+}
+             a#navmenuToggable{
+        border-radius: 0px;
+    height: 40px;
+    width: 40px;
+    background: #827070;
+    text-align: center;
+    color: #Fff;
+    padding: 4px;
+    line-height: 34px;
+    font-size: 9px;
+    margin-bottom: 5px;
+    right: 10px;
+    position: relative;
+    display: inline-block;
+ }
+.box {
+  background-color: #218D9B;
+  width: 10px;
+  opacity: 0;
+  position: absolute;
+  right: -500px;
+}
+
+/*
+.transform {
+  -webkit-transition: width 2s ease;
+  -moz-transition: width 2s ease;
+  -o-transition: width 2s ease;
+  -ms-transition: width 2s ease;
+  transition: width 2s ease;
+}
+*/
+.transform-active {
+  background-color: #45CEE0;
+    width: 100%;
+    opacity: 1;
+    height: auto;
+  right: 0px;
+  position: absolute;
+    z-index: 10;
+    background: #fff;
+
+}
+#adminid {
+    height: 0px;
+}
+#adminid .btn {
+    border-radius: 0px;
+}
+.btn {
+    border-radius: 0px !important;
+}
+
+
+
+.mt10 {
+    margin-top: 10px;
+}
+.mb5 {
+    margin-bottom: 5px;
+}
+.red {
+    background: red;
+    color: #fff;
+}
+.blue {
+    background: #29cadc;
+    color: #fff;
+}
+.orange {
+    background: orange;
+    color: #fff;
+}
+.pink {
+    background: #de5f75;
+    color: #fff;
+}
+
+.flex-wrapper {
+    display: flex;
+
+}
+.well {
+        background-color: rgb(249, 249, 249);
+    border: 1px solid #b3b0b0;
+    border-radius: 0px;
+}
+.flex-item {
+  flex: 1;
+}
+
+.flex-wrapper label {
+    margin-right: 15px ;
+}
+.form-control {
+    border-radius: 0px;
+     display: inline;
+}
+
+
+
+
+@media only screen and (min-width : 348px){
+
+    .ngdialog-content {
+    width: 80% !important;
+    margin: 0 auto;
+    height: auto;
+    }
+
+    .ngdialog-content h2 {
+            font-size: 18px;
+    font-weight: bold;
+    }
+    .ngdialog-content  label {
+        font-size: 14px;
+    font-weight: normal;
+    }
+
+}
+
+@media only screen and (min-width : 768px){
+
+    .ngdialog-content {
+    width: 50% !important;
+    margin: 0 auto;
+    height: auto;
+}
+    .transform-active {
+        width: 20%;
+        right: 40px;
+    }
+
+
+
+}
+.error{
+    color: red;
+    font-weight:bold;
+}
+
+
+.admin-user{
+    line-height: 35px;
+}

@@ -1,0 +1,65 @@
+<div class="section">
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-warning">
+            <h4>Detail Results For {{testName}}</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-condensed table-responsive-sm table-hover">
+              <thead class="thead-bg">
+                <tr>
+                  <th>Questions</th>
+                  <th>Correct Answer</th>
+                  <th>User's Answer</th>
+                  <th>Check Text Answer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let test of detailsData;index as i">
+                  <td>
+                    <span>{{test.text}}</span>
+                  </td>
+                  <td>
+                    <span>{{test.answer}}</span>
+                  </td>
+                  <td>
+                    <span>{{test.selectedanswer == 'option1' ? 'True' : (test.selectedanswer == 'option2' ? 'False' : test.selectedanswer)}}</span>
+                  </td>
+                  <td *ngIf="test.questionType == 'text'">
+                    <input type="radio" name="optradio{{i}}" [checked]="test.iscorrect" (change)="checktest(test,'true')">
+                    Correct<br>
+
+                    <input type="radio" name="optradio{{i}}" [checked]="!test.iscorrect" (change)="checktest(test,'false')">
+                    Incorrect<br>
+                  </td>
+                  <td *ngIf="test.questionType!=='text' && test.iscorrect == true">
+                    <span>Correct Answer</span>
+                
+                  </td>
+                  <td *ngIf="test.questionType!=='text' && test.iscorrect == false">
+                    <span>Incorrect Answer</span>
+                  
+                  </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+            <div>
+              <div class="row">
+                <div class="col-md-3 offset-md-6">
+                  <div><button class="btn w-100 bg-info text-white" value="Ok" (click)="checktext(detailsData);">Submit</button></div>
+                </div>
+                <div class="col-md-3">
+                  <div><button class="btn w-100 bg-light border" (click)="gotoParent();">Close</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="section">
+    <div class="container-fluid mt-5">
+        <form [formGroup]="catForm" (ngSubmit)="onSubmit()">
+            <div class="row"  *ngIf='master'>
+                  
+                <div class="col-md-12 mb-2">
+                    <div class="card-header bg-info">
+                        <h4 class="text-capitalize text-white font-weight-bold">{{title}}
+                        </h4>
+                       
+                    </div>
+                    <span class="text-success">{{message}}</span><br />
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name" name="name" formControlName="name" [ngClass]="{'is-invalid': submitted && f.name.errors }"
+                            placeholder="Enter Category Name">
+                        <div *ngIf="submitted && f.name.errors" class="text-danger">
+                            <div *ngIf="f.name.errors.required">Category Name is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-info w-100">{{captionButton}}</button>
+                </div>
+                <div class="col-md-3">
+                        <button type="button" class="btn btn-light border w-100" (click)="gotoParent()">Close</button>
+                    </div>
+
+            </div>
+            
+            <div class="row mt-3"  *ngIf='!master'>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white pt-2 pb-0">
+                            <h4 class="text-capitalize mb-0" style="line-height: 37px;">List of Category <span class="float-right h5 font-weight-normal">Create Category <i
+                                class="fa fa-plus-square ml-2 btn btn-warning text-dark" type="button" data-toggle="modal"
+                                data-target="#exampleModal" (click)="addUser()"></i></span></h4>
+                        </div>
+                        <div class="card-body">
+                                <app-datatable  [tableData]='filteredData' [columns]='columns'   (onEdit)='onEdit($event)' (onDelete)='onDelete($event)' [tblbtns]='tblbtns'></app-datatable>
+                            <!-- <table class="table table-responnsive-sm table-hover">
+                                <thead class="thead-bg">
+                                    <tr>
+                                        <th>Sr. No</th>
+                                        <th>Category Name</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let cat of  catList ; index as i">
+                                        <td>{{ i + 1}}</td>
+                                        <td>{{cat.name}}</td>
+                                        <td>
+                                            <a class="mr-2"><i class="fa fa-edit text-warning" (click)="editCategory(cat)" data-toggle="modal"></i></a>
+                                            <a class="ml-2"><i class="fa fa-trash text-danger" (click)="deleteCategory(cat)" data-toggle="modal"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

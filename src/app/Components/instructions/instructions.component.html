@@ -1,0 +1,66 @@
+<div class="section">
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h4>Quiz Instructions</h4>
+                    </div>
+                    <div class="card-body">
+                        <span [ngClass]="showMessage ? 'text-success' : 'text-danger'" class="text-success">{{message}}</span><br />
+                        <form [formGroup]="instrForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Quiz Instruction</label>
+                                        <input type="text" class="form-control" id="textValue" name="textValue"
+                                            formControlName="textValue" [ngClass]="{'is-invalid': submitted && f.textValue.errors }"
+                                            placeholder="Add Quiz Instruction">
+                                        <div *ngIf="submitted && f.textValue.errors" class="text-danger">
+                                            <div *ngIf="f.textValue.errors.required">Quiz Instruction is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-info w-25">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4>Quiz Instructions</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive-sm">
+                                <app-datatable  [tableData]='filteredData' [columns]='columns'    (onDelete)='onDelete($event)' [tblbtns]='tblbtns'></app-datatable>
+                            <!-- <table class="table table-bordered table-hover">
+                                <thead class="thead-bg">
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th> Instructions</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of allInstructionsList; index as i">
+                                        <td>{{i+1}} </td>
+                                        <td>{{item.text}}</td>
+                                        <td><a href="javascript:void(0) " (click)="deleteUser(item._id)"><i class="fa fa-trash text-danger"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

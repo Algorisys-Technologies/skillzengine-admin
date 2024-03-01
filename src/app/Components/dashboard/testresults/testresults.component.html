@@ -1,0 +1,64 @@
+<div class="section">
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h4 class="text-capitalize">User wise result for {{testName}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="mb-2">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="" class="admin-user">Select User </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <select (change)="onSelectUser($event.target.value)" class="form-control">
+                                            <option value="Select">--Select--</option>
+                                            <option value="All">All</option>
+                                            <option *ngFor="let item of resultDataForUser" class="selectpicker" value="{{item.userId}}">{{item.userName}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="button" class="btn btn-info btnshowall mb10" (click)="showResults()"
+                                            value="Show Result" />
+                                        <button class="btn btn-light  ml-2 border back-btn" (click)="gotoParent();">Back</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <table class="table table-borderedless table-responsive-sm table-hover">
+                            <thead class="thead-bg">
+                                <tr>
+                                    <td>Sr no.</td>
+                                    <td>User name</td>
+                                    <td>Marks</td>
+                                    <td>Details</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let list of resultData; index as i">
+                                    <td>{{i+1}}</td>
+                                    <td>{{list.userName}}</td>
+
+                                    <td *ngIf="list.Marks =='NaN'">0.00%</td>
+                                    <td *ngIf="list.Marks !=='NaN'">{{list.Marks}}%</td>
+                                    <td><button class="btn btn-info w-100" [routerLink]="['../../testdetails',list.testId,list.userId]">Details</button></td>
+                                </tr>
+                                <tr *ngIf="resultData.length ==0 || resultData =='undefined'">
+                                    <td colspan="4">No results found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
