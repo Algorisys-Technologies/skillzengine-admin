@@ -12,7 +12,7 @@ var secretKey = '08970a0d-8fAA08-1234994-9d6b-1732f7e14942';
 var routes = require('./routes');
 var mdb = require('./db');
 
-mdb.connect('mongodb://localhost/testengine', function (err) {
+mdb.connect('mongodb://localhost:27017','testengine', function (err) {
   if (err) {
     process.exit(1)
   }
