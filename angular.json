@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "testengine"
+  "defaultProject": "testengine",
+  "cli": {
+    "analytics": false
+  }
 }
