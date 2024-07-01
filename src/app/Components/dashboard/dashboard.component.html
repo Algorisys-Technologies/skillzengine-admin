@@ -1,47 +1,76 @@
 <div class="container-fluid mt-3">
-    <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="text-capitalize">admin dashboard <a class="ml-3 w-15 px-2 py-2 bg-dark" [routerLink]="['../notifications']"><span
-                                style="color:white;">{{requestCount}}</span></a></h4>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="text-capitalize">
+            admin dashboard
+            <a
+              class="ml-3 w-15 px-2 py-2 bg-dark"
+              [routerLink]="['../notifications']"
+              ><span style="color: white">{{ requestCount }}</span></a
+            >
+          </h4>
         </div>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card rounded">
-                <div class="media ">
-                    <h2 class="media-test text-center text-capitalize bg-warning mb-0"><a [routerLink]="['../admintotaltest']">total
-                            test</a></h2>
-                    <div class="media-body">
-                        <h1 class="media-count mt-0 mb-0 text-center"><a [routerLink]="['../admintotaltest']">{{totTest}}</a></h1>
-                    </div>
-                </div>
-            </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card rounded">
+        <div class="media">
+          <h2 class="media-test text-center text-capitalize bg-warning mb-0">
+            <a [routerLink]="['../admintotaltest']">total test</a>
+          </h2>
+          <div class="media-body">
+            <h1 class="media-count mt-0 mb-0 text-center">
+              <a [routerLink]="['../admintotaltest']">{{ totTest }}</a>
+            </h1>
+          </div>
         </div>
-        <div class="col-md-4">
-            <div class="card rounded">
-                <div class="media ">
-                    <h2 class="media-test-1 text-center text-capitalize bg-info mb-0"><a [routerLink]="['../admintodaylist']">taken
-                            today</a></h2>
-                    <div class="media-body">
-                        <h1 class="media-count-1 mt-0 mb-0 text-center"><a [routerLink]="['../admintodaylist']">{{totPTest}}</a></h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card rounded">
-                <div class="media ">
-                    <h2 class="media-test text-center text-capitalize bg-warning mb-0"><a [routerLink]="['../adminthisweek']">this
-                            week</a></h2>
-                    <div class="media-body">
-                        <h1 class="media-count mt-0 mb-0 text-center"><a [routerLink]="['../adminthisweek']">{{totCTest}}</a></h1>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="col-md-4">
+      <div class="card rounded">
+        <div class="media">
+          <h2 class="media-test-1 text-center text-capitalize bg-info mb-0">
+            <a [routerLink]="['../admintodaylist']">taken today</a>
+          </h2>
+          <div class="media-body">
+            <h1 class="media-count-1 mt-0 mb-0 text-center">
+              <a [routerLink]="['../admintodaylist']">{{ totPTest }}</a>
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card rounded">
+        <div class="media">
+          <h2 class="media-test text-center text-capitalize bg-warning mb-0">
+            <a [routerLink]="['../adminthisweek']">this week</a>
+          </h2>
+          <div class="media-body">
+            <h1 class="media-count mt-0 mb-0 text-center">
+              <a [routerLink]="['../adminthisweek']">{{ totCTest }}</a>
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card rounded">
+        <div class="media">
+          <h2 class="media-test-1 text-center text-capitalize bg-info mb-0">
+            <a [routerLink]="['../livetest']">Live Test</a>
+          </h2>
+          <div class="media-body">
+            <h1 class="media-count-1 mt-0 mb-0 text-center">
+              <a [routerLink]="['../livetest']">{{ liveTest }}</a>
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

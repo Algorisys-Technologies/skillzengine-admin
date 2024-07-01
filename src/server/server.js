@@ -55,15 +55,23 @@ io.on("connection", (socket) => {
   });
 
   socket.on("offer", (data) => {
+    console.log("Received offer from:", data.id);
     socket.broadcast.emit("offer", data);
   });
 
   socket.on("answer", (data) => {
+    console.log("Received answer from:", data.id);
     socket.broadcast.emit("answer", data);
   });
 
   socket.on("candidate", (data) => {
+    console.log("Received ICE candidate from:", data.id);
     socket.broadcast.emit("candidate", data);
+  });
+
+  socket.on("joinRoom", (data) => {
+    socket.join(data.room);
+    console.log(`Client joined room: ${data.room}`);
   });
 });
 
