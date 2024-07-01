@@ -1,0 +1,49 @@
+/* Container styling */
+div {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Video container styling */
+.video-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 10px;
+}
+
+/* Video element styling */
+video {
+  width: 45%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+}
+
+/* Button container styling */
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+}
+
+/* Button styling */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

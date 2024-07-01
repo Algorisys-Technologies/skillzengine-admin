@@ -12,6 +12,11 @@ var secretKey = '08970a0d-8fAA08-1234994-9d6b-1732f7e14942';
 var routes = require('./routes');
 var mdb = require('./db');
 
+const socketIo = require("socket.io");
+
+const server = http.createServer(app);
+
+
 mdb.connect('mongodb://localhost:27017','testengine', function (err) {
   if (err) {
     process.exit(1)
@@ -22,7 +27,9 @@ mdb.connect('mongodb://localhost:27017','testengine', function (err) {
 
 // server deployment part start
 app.use(fileUpload());
-app.use(cors());
+app.use(cors( {origin:'http://localhost:5000', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200, allowedHeaders: '*'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -40,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // } else {
   app.use(express.static(__dirname + '/public'));
   app.use('/routes', routes);
-  app.listen(3000);
+  server.listen(3000);
 //}
 
 //LOCAL START
@@ -58,3 +65,34 @@ app.use(bodyParser.urlencoded({ extended: false }));
  
 
 //LOCAL END
+
+const io = new socketIo(server, {
+  path: "/socket.io",
+});
+
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+
+
+
+  socket.on("offer", (data) => {
+    console.log( "offer", data)
+    socket.emit("offer", data);
+  });
+
+  socket.on("answer", (data) => {
+    console.log("answer" , data)
+ 
+    socket.emit("answer", data);
+  });
+
+  socket.on("candidate", (data) => {
+    console.log("candidate")
+    socket.emit("candidate", data);
+  });
+});
