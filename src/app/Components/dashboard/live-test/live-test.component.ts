@@ -9,6 +9,7 @@ import { SocketService } from "src/app/Services/socket.service";
 export class LiveTestComponent implements OnInit, OnDestroy {
   private localStream: MediaStream;
   private peerConnection: RTCPeerConnection;
+  private remoteStreams: any[] = [];
 
   constructor(private socketService: SocketService) {}
 
@@ -157,11 +158,15 @@ export class LiveTestComponent implements OnInit, OnDestroy {
     };
 
     this.peerConnection.ontrack = (event) => {
-      const remoteVideo = document.querySelector(
-        "video#remoteVideo"
-      ) as HTMLVideoElement;
-      remoteVideo.srcObject = event.streams[0];
+      this.remoteStreams.push(event.streams[0]);
     };
+
+    // this.peerConnection.ontrack = (event) => {
+    //   const remoteVideo = document.querySelector(
+    //     "video#remoteVideo"
+    //   ) as HTMLVideoElement;
+    //   remoteVideo.srcObject = event.streams[0];
+    // };
   }
 
   handleAnswer(answer): void {
