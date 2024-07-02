@@ -32,6 +32,13 @@ export class LiveTestComponent implements OnInit, OnDestroy {
     // this.peerConnection.onicecandidate = this.handleCandidate;
     this.initializeMedia();
     this.setupSocketListeners();
+
+    // Retrieve remoteStreams from localStorage if available
+    const storedRemoteStreams = localStorage.getItem("remoteStreams");
+    console.log("storedRemoteStreams", storedRemoteStreams);
+    if (storedRemoteStreams) {
+      this.remoteStreams = JSON.parse(storedRemoteStreams);
+    }
   }
 
   ngOnDestroy(): void {
@@ -159,6 +166,7 @@ export class LiveTestComponent implements OnInit, OnDestroy {
 
     this.peerConnection.ontrack = (event) => {
       this.remoteStreams.push(event.streams[0]);
+      localStorage.setItem("remoteStreams", JSON.stringify(this.remoteStreams));
     };
 
     // this.peerConnection.ontrack = (event) => {
@@ -236,5 +244,7 @@ export class LiveTestComponent implements OnInit, OnDestroy {
     if (this.peerConnection) {
       this.peerConnection.close();
     }
+
+    localStorage.removeItem("remoteStreams");
   }
 }
