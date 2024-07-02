@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import * as io from "socket.io-client";
+import { SocketService } from "src/app/Services/socket.service";
 
 @Component({
   selector: "app-live-test",
@@ -7,148 +7,229 @@ import * as io from "socket.io-client";
   styleUrls: ["./live-test.component.css"],
 })
 export class LiveTestComponent implements OnInit, OnDestroy {
-  private socket: any;
-  private peerConnections: { [id: string]: RTCPeerConnection } = {};
   private localStream: MediaStream;
+  private peerConnection: RTCPeerConnection;
 
-  constructor() {}
+  constructor(private socketService: SocketService) {}
 
-  ngOnInit() {
-    this.initWebSocket();
-    this.startLocalVideo();
-  }
-
-  ngOnDestroy() {
-    // Clean up resources
-    Object.keys(this.peerConnections).forEach((id) => {
-      this.peerConnections[id].close();
+  ngOnInit(): void {
+    this.peerConnection = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun1.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun3.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun4.l.google.com:19302",
+        },
+      ],
+      iceCandidatePoolSize: 10,
     });
-    this.peerConnections = {};
-    if (this.localStream) {
-      this.localStream.getTracks().forEach((track) => track.stop());
-    }
-    if (this.socket) {
-      this.socket.disconnect();
+    // this.peerConnection.onnegotiationneeded = () => this.handleNewParticipant;
+    // this.peerConnection.onicecandidate = this.handleCandidate;
+    this.initializeMedia();
+    this.setupSocketListeners();
+  }
+
+  ngOnDestroy(): void {
+    this.endCall();
+    this.socketService.disconnect();
+    if (this.peerConnection) {
+      this.peerConnection.close();
     }
   }
 
-  startLocalVideo() {
+  initializeMedia(): void {
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         this.localStream = stream;
-        this.addVideoStream(stream, "local");
+        const video = document.querySelector(
+          "video#localVideo"
+        ) as HTMLVideoElement;
+        if (video) {
+          video.srcObject = stream;
+        }
+
+        this.startCall();
+        // Now that localStream is set, proceed with setting up peerConnection or other logic.
       })
-      .catch((error) => console.error("Error accessing media devices.", error));
+      .catch((error) => {
+        console.error("Error accessing media devices:", error);
+        // Handle error as needed
+      });
   }
 
-  initWebSocket() {
-    this.socket = io("http://localhost:3000");
-
-    this.socket.on("connect", () => {
-      console.log("Connected to server");
-    });
-
-    this.socket.on("disconnect", () => {
-      console.log("Disconnected from server");
-    });
-
-    this.socket.on("newParticipant", (data: any) => {
-      console.log("New participant joined:", data.id);
-      this.handleNewParticipant(data);
-    });
-
-    this.socket.on("offer", (data: any) => {
-      console.log("Received offer from:", data.id);
-      this.handleOffer(data);
-    });
-
-    this.socket.on("answer", (data: any) => {
-      console.log("Received answer from:", data.id);
-      this.handleAnswer(data);
-    });
-
-    this.socket.on("candidate", (data: any) => {
-      console.log("Received ICE candidate from:", data.id);
-      this.handleCandidate(data);
-    });
-
-    this.socket.emit("joinRoom", { room: "liveTestRoom" });
-    console.log("Sent joinRoom request");
-
-    // this.socket.emit("newParticipant", { id: "1234" });
+  setupSocketListeners(): void {
+    this.socketService.listen("offer", (data) => this.handleOffer(data));
+    this.socketService.listen("answer", (data) => this.handleAnswer(data));
+    this.socketService.listen("candidate", (data) =>
+      this.handleCandidate(data)
+    );
+    this.socketService.listen("newParticipant", (data) =>
+      this.handleNewParticipant(data)
+    );
   }
 
-  handleNewParticipant(data: any) {
-    const peerConnection = this.createPeerConnection(data.id);
-    this.peerConnections[data.id] = peerConnection;
+  startCall(): void {
+    console.log("call started");
 
-    console.log("peerConnection", peerConnection, "DataId", data.id);
-  }
+    if (!this.localStream) {
+      console.error("localStream is not initialized.");
+      return;
+    }
 
-  handleOffer(data: any) {
-    const peerConnection = this.peerConnections[data.id];
-    peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+    console.log(" this.peerConnection", this.peerConnection);
 
-    peerConnection
-      .createAnswer()
-      .then((answer) => peerConnection.setLocalDescription(answer))
-      .then(() =>
-        this.socket.emit("answer", {
-          id: data.id,
-          answer: peerConnection.localDescription,
-        })
-      );
-  }
+    if (this.localStream.getTracks().length === 0) {
+      console.error("No tracks available in localStream.");
+      return;
+    }
 
-  handleAnswer(data: any) {
-    const peerConnection = this.peerConnections[data.id];
-    peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
-  }
+    this.localStream.getTracks().forEach((track) => {
+      this.peerConnection.addTrack(track, this.localStream);
+      console.log("track", track, this.localStream);
+    });
 
-  handleCandidate(data: any) {
-    const peerConnection = this.peerConnections[data.id];
-    peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
-  }
-
-  createPeerConnection(id: string): RTCPeerConnection {
-    const peerConnection = new RTCPeerConnection();
-
-    peerConnection.onicecandidate = (event) => {
+    this.peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
-        console.log(`Sending ICE candidate to: ${id}`);
-        this.socket.emit("candidate", { id, candidate: event.candidate });
+        this.socketService.emit("candidate", event.candidate);
+      }
+      console.log("candidate");
+    };
+
+    this.peerConnection.ontrack = (event) => {
+      const remoteVideo = document.querySelector(
+        "video#remoteVideo"
+      ) as HTMLVideoElement;
+      remoteVideo.srcObject = event.streams[0];
+
+      console.log("remote video", remoteVideo);
+    };
+
+    this.peerConnection.createOffer().then((offer) => {
+      this.peerConnection.setLocalDescription(offer);
+      this.socketService.emit("offer", offer);
+      console.log("offer", offer);
+    });
+  }
+
+  handleOffer(offer): void {
+    this.peerConnection = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun1.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun3.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun4.l.google.com:19302",
+        },
+      ],
+    });
+
+    if (!this.peerConnection.currentRemoteDescription) {
+    }
+    this.peerConnection
+      .setRemoteDescription(new RTCSessionDescription(offer))
+      .then(() => {
+        return this.peerConnection.createAnswer();
+      })
+      .then((answer) => {
+        console.log("answer", answer);
+        this.peerConnection.setLocalDescription(
+          new RTCSessionDescription(answer)
+        );
+        this.socketService.emit("answer", answer);
+      });
+
+    this.localStream.getTracks().forEach((track) => {
+      this.peerConnection.addTrack(track, this.localStream);
+    });
+
+    this.peerConnection.onicecandidate = (event) => {
+      if (event.candidate) {
+        this.socketService.emit("candidate", event.candidate);
       }
     };
 
-    peerConnection.ontrack = (event) => {
-      this.addVideoStream(event.streams[0], id);
+    this.peerConnection.ontrack = (event) => {
+      const remoteVideo = document.querySelector(
+        "video#remoteVideo"
+      ) as HTMLVideoElement;
+      remoteVideo.srcObject = event.streams[0];
     };
-
-    this.localStream
-      .getTracks()
-      .forEach((track) => peerConnection.addTrack(track, this.localStream));
-
-    // Send offer to new participant
-    peerConnection.createOffer().then((offer) => {
-      peerConnection.setLocalDescription(offer);
-      this.socket.emit("offer", { id, offer });
-      console.log(`Sent offer to: ${id}`);
-    });
-
-    return peerConnection;
   }
 
-  addVideoStream(stream: MediaStream, id: string) {
-    const videoElement = document.createElement("video");
-    videoElement.srcObject = stream;
-    videoElement.autoplay = true;
-    if (id === "local") {
-      videoElement.muted = true; // Mute local video
-    }
-    document.querySelector(".live-test-container").appendChild(videoElement);
+  handleAnswer(answer): void {
+    console.log("answerrrr", answer);
 
-    console.log(`Added video stream for ${id}`);
-    console.log(`Current peerConnections: `, this.peerConnections);
+    //   this.peerConnection = new RTCPeerConnection({
+    //     iceServers: [
+    //         {
+    //             urls: 'stun:stun1.l.google.com:19302'
+    //           },
+    //           {
+    //             urls: 'stun:stun3.l.google.com:19302'
+    //           },
+    //           {
+    //             urls: 'stun:stun4.l.google.com:19302'
+    //           }
+    //     ]
+    // });
+
+    if (!this.peerConnection.currentRemoteDescription) {
+      const answerDescription = new RTCSessionDescription(answer);
+      this.peerConnection.setRemoteDescription(answerDescription);
+    }
+  }
+
+  handleCandidate(candidate): void {
+    this.peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+  }
+
+  handleNewParticipant(data: any): void {
+    console.log("New participant joined:", data.id);
+    // Create a new RTCPeerConnection for the new participant
+
+    this.localStream.getTracks().forEach((track) => {
+      this.peerConnection.addTrack(track, this.localStream);
+    });
+
+    this.peerConnection.onicecandidate = (event) => {
+      if (event.candidate) {
+        this.socketService.emit("candidate", {
+          id: data.id,
+          candidate: event.candidate,
+        });
+      }
+    };
+
+    this.peerConnection.ontrack = (event) => {
+      const remoteVideo = document.querySelector(
+        "video#remoteVideo"
+      ) as HTMLVideoElement;
+      remoteVideo.srcObject = event.streams[0];
+    };
+
+    // Send an offer to the new participant
+    this.peerConnection.createOffer().then((offer) => {
+      this.peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+      this.socketService.emit("offer", { id: data.id, offer });
+    });
+  }
+
+  endCall(): void {
+    console.log("call ended");
+    if (this.localStream) {
+      this.localStream.getTracks().forEach((track) => track.stop());
+    }
+
+    if (this.peerConnection) {
+      this.peerConnection.close();
+    }
   }
 }

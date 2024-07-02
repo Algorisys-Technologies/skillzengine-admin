@@ -55,17 +55,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("offer", (data) => {
-    console.log("Received offer from:", data.id);
+    console.log("Received offer from:", data);
     socket.broadcast.emit("offer", data);
   });
 
   socket.on("answer", (data) => {
-    console.log("Received answer from:", data.id);
+    console.log("Received answer from:", data);
     socket.broadcast.emit("answer", data);
   });
 
   socket.on("candidate", (data) => {
-    console.log("Received ICE candidate from:", data.id);
+    console.log("Received ICE candidate from:", data);
     socket.broadcast.emit("candidate", data);
   });
 
