@@ -9,44 +9,17 @@ import { SocketService } from "src/app/Services/socket.service";
 export class LiveTestComponent implements OnInit, OnDestroy {
   private localStream: MediaStream;
   private peerConnection: RTCPeerConnection;
-  private remoteStreams: any[] = [];
+  private remoteStreams: MediaStream[] = [];
 
   constructor(private socketService: SocketService) {}
 
   ngOnInit(): void {
-    this.peerConnection = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: "stun:stun1.l.google.com:19302",
-        },
-        {
-          urls: "stun:stun3.l.google.com:19302",
-        },
-        {
-          urls: "stun:stun4.l.google.com:19302",
-        },
-      ],
-      iceCandidatePoolSize: 10,
-    });
-    // this.peerConnection.onnegotiationneeded = () => this.handleNewParticipant;
-    // this.peerConnection.onicecandidate = this.handleCandidate;
-    this.initializeMedia();
     this.setupSocketListeners();
-
-    // Retrieve remoteStreams from localStorage if available
-    const storedRemoteStreams = localStorage.getItem("remoteStreams");
-    console.log("storedRemoteStreams", storedRemoteStreams);
-    if (storedRemoteStreams) {
-      this.remoteStreams = JSON.parse(storedRemoteStreams);
-    }
+    this.initializeMedia();
   }
 
   ngOnDestroy(): void {
     this.endCall();
-    this.socketService.disconnect();
-    if (this.peerConnection) {
-      this.peerConnection.close();
-    }
   }
 
   initializeMedia(): void {
@@ -62,11 +35,9 @@ export class LiveTestComponent implements OnInit, OnDestroy {
         }
 
         this.startCall();
-        // Now that localStream is set, proceed with setting up peerConnection or other logic.
       })
       .catch((error) => {
         console.error("Error accessing media devices:", error);
-        // Handle error as needed
       });
   }
 
@@ -82,45 +53,43 @@ export class LiveTestComponent implements OnInit, OnDestroy {
   }
 
   startCall(): void {
-    console.log("call started");
-
     if (!this.localStream) {
       console.error("localStream is not initialized.");
       return;
     }
 
-    console.log(" this.peerConnection", this.peerConnection);
-
-    if (this.localStream.getTracks().length === 0) {
-      console.error("No tracks available in localStream.");
-      return;
-    }
+    this.peerConnection = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun1.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun3.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun4.l.google.com:19302",
+        },
+      ],
+      iceCandidatePoolSize: 10,
+    });
 
     this.localStream.getTracks().forEach((track) => {
       this.peerConnection.addTrack(track, this.localStream);
-      console.log("track", track, this.localStream);
     });
 
     this.peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
         this.socketService.emit("candidate", event.candidate);
       }
-      console.log("candidate");
     };
 
     this.peerConnection.ontrack = (event) => {
-      const remoteVideo = document.querySelector(
-        "video#remoteVideo"
-      ) as HTMLVideoElement;
-      remoteVideo.srcObject = event.streams[0];
-
-      console.log("remote video", remoteVideo);
+      this.remoteStreams.push(event.streams[0]);
     };
 
     this.peerConnection.createOffer().then((offer) => {
       this.peerConnection.setLocalDescription(offer);
       this.socketService.emit("offer", offer);
-      console.log("offer", offer);
     });
   }
 
@@ -137,20 +106,16 @@ export class LiveTestComponent implements OnInit, OnDestroy {
           urls: "stun:stun4.l.google.com:19302",
         },
       ],
+      iceCandidatePoolSize: 10,
     });
 
-    if (!this.peerConnection.currentRemoteDescription) {
-    }
     this.peerConnection
       .setRemoteDescription(new RTCSessionDescription(offer))
       .then(() => {
         return this.peerConnection.createAnswer();
       })
       .then((answer) => {
-        console.log("answer", answer);
-        this.peerConnection.setLocalDescription(
-          new RTCSessionDescription(answer)
-        );
+        this.peerConnection.setLocalDescription(new RTCSessionDescription(answer));
         this.socketService.emit("answer", answer);
       });
 
@@ -166,38 +131,12 @@ export class LiveTestComponent implements OnInit, OnDestroy {
 
     this.peerConnection.ontrack = (event) => {
       this.remoteStreams.push(event.streams[0]);
-      localStorage.setItem("remoteStreams", JSON.stringify(this.remoteStreams));
     };
-
-    // this.peerConnection.ontrack = (event) => {
-    //   const remoteVideo = document.querySelector(
-    //     "video#remoteVideo"
-    //   ) as HTMLVideoElement;
-    //   remoteVideo.srcObject = event.streams[0];
-    // };
   }
 
   handleAnswer(answer): void {
-    console.log("answerrrr", answer);
-
-    //   this.peerConnection = new RTCPeerConnection({
-    //     iceServers: [
-    //         {
-    //             urls: 'stun:stun1.l.google.com:19302'
-    //           },
-    //           {
-    //             urls: 'stun:stun3.l.google.com:19302'
-    //           },
-    //           {
-    //             urls: 'stun:stun4.l.google.com:19302'
-    //           }
-    //     ]
-    // });
-
-    if (!this.peerConnection.currentRemoteDescription) {
-      const answerDescription = new RTCSessionDescription(answer);
-      this.peerConnection.setRemoteDescription(answerDescription);
-    }
+    const answerDescription = new RTCSessionDescription(answer);
+    this.peerConnection.setRemoteDescription(answerDescription);
   }
 
   handleCandidate(candidate): void {
@@ -205,14 +144,26 @@ export class LiveTestComponent implements OnInit, OnDestroy {
   }
 
   handleNewParticipant(data: any): void {
-    console.log("New participant joined:", data.id);
-    // Create a new RTCPeerConnection for the new participant
-
-    this.localStream.getTracks().forEach((track) => {
-      this.peerConnection.addTrack(track, this.localStream);
+    const newPeerConnection = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun1.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun3.l.google.com:19302",
+        },
+        {
+          urls: "stun:stun4.l.google.com:19302",
+        },
+      ],
+      iceCandidatePoolSize: 10,
     });
 
-    this.peerConnection.onicecandidate = (event) => {
+    this.localStream.getTracks().forEach((track) => {
+      newPeerConnection.addTrack(track, this.localStream);
+    });
+
+    newPeerConnection.onicecandidate = (event) => {
       if (event.candidate) {
         this.socketService.emit("candidate", {
           id: data.id,
@@ -221,22 +172,17 @@ export class LiveTestComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.peerConnection.ontrack = (event) => {
-      const remoteVideo = document.querySelector(
-        "video#remoteVideo"
-      ) as HTMLVideoElement;
-      remoteVideo.srcObject = event.streams[0];
+    newPeerConnection.ontrack = (event) => {
+      this.remoteStreams.push(event.streams[0]);
     };
 
-    // Send an offer to the new participant
-    this.peerConnection.createOffer().then((offer) => {
-      this.peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+    newPeerConnection.createOffer().then((offer) => {
+      newPeerConnection.setLocalDescription(new RTCSessionDescription(offer));
       this.socketService.emit("offer", { id: data.id, offer });
     });
   }
 
   endCall(): void {
-    console.log("call ended");
     if (this.localStream) {
       this.localStream.getTracks().forEach((track) => track.stop());
     }
@@ -244,7 +190,5 @@ export class LiveTestComponent implements OnInit, OnDestroy {
     if (this.peerConnection) {
       this.peerConnection.close();
     }
-
-    localStorage.removeItem("remoteStreams");
   }
 }
