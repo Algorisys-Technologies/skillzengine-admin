@@ -196,6 +196,7 @@ columns: any[] = [
 
   getTestsByID(testid: string) {
     this.testsService.getTestById(testid).subscribe((response: Response) => {
+      console.log(response)
       this.editData = response;
       this.populateTestForm(this.editData);
 
