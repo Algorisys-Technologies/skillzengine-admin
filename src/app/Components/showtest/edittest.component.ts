@@ -83,6 +83,8 @@ columns: any[] = [
     isActive: [{ value: '', disabled: false }, (Validators.nullValidator)],
     isAutoCalc: [{ value: false, disabled: false }, (Validators.nullValidator)],
     isShowResult: [{ value: false, disabled: false }, (Validators.nullValidator)],
+    isScreenShare: [{ value: false, disabled: false }, (Validators.nullValidator)],
+    isVideoShare: [{ value: false, disabled: false }, (Validators.nullValidator)],
     groupid: [{ value: [], disabled: false }, (Validators.required)],
 
   });
@@ -136,6 +138,8 @@ columns: any[] = [
     this.testForm.controls["groupid"].setValue(data[0]['groupid']);
     this.testForm.controls["isAutoCalc"].setValue(data[0]['isAutoCalc']);
     this.testForm.controls["isShowResult"].setValue(data[0]['isShowResult']);
+    this.testForm.controls["isScreenShare"].setValue(data[0]['isScreenShare']);
+    this.testForm.controls["isVideoShare"].setValue(data[0]['isVideoShare']);
     for (const key of Object.keys(this.testForm.controls["qIds"].value)) {
       this.selectedQuestions.push(this.testForm.controls["qIds"].value[key]);
     }

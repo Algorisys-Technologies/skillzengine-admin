@@ -218,7 +218,7 @@ module.exports = {
     updateTest: function (req, res, next) {
         var obj = req.body;
         var toChange = { _id: ObjectId(obj.id) }
-        var newValues = { qIds: obj.qIds, testName: obj.testName, testTime: obj.testTime, isAutoCalc: obj.isAutoCalc, groupid: obj.groupid, category: obj.category, isShowTest: obj.isShowTest, isShowResult: obj.isShowResult }
+        var newValues = { qIds: obj.qIds, testName: obj.testName, testTime: obj.testTime, isAutoCalc: obj.isAutoCalc, groupid: obj.groupid, category: obj.category, isShowTest: obj.isShowTest, isShowResult: obj.isShowResult, isShowScreen: obj.isShowScreen, isShowVideo: obj.isShowVideo  }
         conn.get().collection("Tests").update(toChange, { $set: newValues }, function (err, data) {
             if (err) {
                 return next(err);
