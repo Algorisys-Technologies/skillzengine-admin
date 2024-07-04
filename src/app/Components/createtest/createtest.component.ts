@@ -66,6 +66,8 @@ columns: any[] = [
     isActive: [{ value: [], disabled: false }, (Validators.nullValidator)],
     isAutoCalc: [{ value: false, disabled: false }, (Validators.nullValidator)],
     isShowResult: [{ value: false, disabled: false }, (Validators.nullValidator)],
+    isScreenShare: [{ value: false, disabled: false }, (Validators.nullValidator)],
+    isVideoShare: [{ value: false, disabled: false }, (Validators.nullValidator)],
     groupid: [{ value: [], disabled: false }, (Validators.required)],
   });
 
