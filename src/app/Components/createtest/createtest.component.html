@@ -1,120 +1,221 @@
 <div class="section">
-    <div class="container-fluid mt-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header bg-info">
-                        <h4 class="text-capitalize text-white">create test</h4>
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-info">
+            <h4 class="text-capitalize text-white">create test</h4>
+          </div>
+          <div class="card-body">
+            <span
+              [ngClass]="showMessage ? 'text-success' : 'text-danger'"
+              class="text-success"
+              >{{ message }}</span
+            ><br />
+            <form [formGroup]="testForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Test Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="testName"
+                      name="testName"
+                      formControlName="testName"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.testName.errors
+                      }"
+                      placeholder="Enter test name"
+                    />
+                    <div
+                      *ngIf="submitted && f.testName.errors"
+                      class="text-danger"
+                    >
+                      <div *ngIf="f.testName.errors.required">
+                        Test Name is required
+                      </div>
                     </div>
-                    <div class="card-body">
-                        <span [ngClass]="showMessage ? 'text-success' : 'text-danger'" class="text-success">{{message}}</span><br />
-                        <form [formGroup]="testForm" (ngSubmit)="onSubmit()">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Test Name</label>
-                                        <input type="text" class="form-control" id="testName" name="testName"
-                                            formControlName="testName" [ngClass]="{ 'is-invalid': submitted && f.testName.errors }"
-                                            placeholder="Enter test name">
-                                        <div *ngIf="submitted && f.testName.errors" class="text-danger">
-                                            <div *ngIf="f.testName.errors.required">Test Name is required</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Test in minute</label>
-                                    <input type="number" class="form-control" id="testTime" name="testTime"
-                                        formControlName="testTime" [ngClass]="{'is-invalid': submitted && f.testTime.errors }"
-                                        placeholder="Enter test minute">
-                                    <div *ngIf="submitted && f.testTime.errors" class="text-danger">
-                                        <div *ngIf="f.testTime.errors.required">Test Minute is required</div>
-                                    </div>
-
-                                </div>
-
-                              
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <select class="form-control rounded-0" id="category" name="category"
-                                            formControlName="category" (change)="selecteCategory($event.target.value)">
-                                           
-                                         
-                                            <option [value]="selCat">{{selCat}}</option>
-                                            <option [value]="allCat">{{allCat}}</option>
-                                            <option *ngFor="let cat of  catList" [ngValue]="cat.name">
-                                                {{cat.name}}
-                                            </option>
-                                        </select>
-                                        <div *ngIf="submitted && f.category.errors" class="text-danger">
-                                            <div *ngIf="f.category.errors.required">
-                                                Category is required
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group mb-0">
-                                        <label>Group</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-
-                                        <select class="form-control" id="groupid" name="groupid" formControlName="groupid">
-                                            <option *ngFor="let grp of  grpList" [ngValue]="grp._id">
-                                                {{grp.name}}
-                                            </option>
-                                        </select>
-                                        <div *ngIf="submitted && f.groupid.errors" class="text-danger">
-                                            <div *ngIf="f.groupid.errors.required">
-                                                Group is required
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <a type="button" routerLink='../groupmastr' class="btn btn-info">Create Group</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check form-check-inline" style="line-height: 43px;">
-                                        <input class="form-check-input" type="checkbox" formControlName="isAutoCalc"
-                                            name="isAutoCalc">
-                                        <label class="form-check-label" for="inlineCheckbox1">Auto Calc</label>
-                                    </div>
-                                    <div class="form-check form-check-inline" style="line-height: 43px;">
-                                        <input class="form-check-input" type="checkbox" formControlName="isShowResult"
-                                            name="isShowResult">
-                                        <label class="form-check-label" for="inlineCheckbox1">Show Result</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr/>
-                            <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button (disabled)="submitted" type="submit" class="btn btn-info float-right">Create</button>
-                                </div>
-                            </div>
-                        </div>
-                        </form>
-                    </div>
+                  </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header bg-info">
-                        <h4 class="text-capitalize text-white">Available Questions</h4>
+                <div class="col-md-4">
+                  <label>Test in minute</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="testTime"
+                    name="testTime"
+                    formControlName="testTime"
+                    [ngClass]="{ 'is-invalid': submitted && f.testTime.errors }"
+                    placeholder="Enter test minute"
+                  />
+                  <div
+                    *ngIf="submitted && f.testTime.errors"
+                    class="text-danger"
+                  >
+                    <div *ngIf="f.testTime.errors.required">
+                      Test Minute is required
                     </div>
-                    <div class="card-body">
-                            <app-datatable  [tableData]='questions' [columns]='columns'  (onSelect)='onSelect($event)'  [tblbtns]='tblbtns'></app-datatable>
-                        <!-- <table class="table table-hover">
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select
+                      class="form-control rounded-0"
+                      id="category"
+                      name="category"
+                      formControlName="category"
+                      (change)="selecteCategory($event.target.value)"
+                    >
+                      <option [value]="selCat">{{ selCat }}</option>
+                      <option [value]="allCat">{{ allCat }}</option>
+                      <option *ngFor="let cat of catList" [ngValue]="cat.name">
+                        {{ cat.name }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="submitted && f.category.errors"
+                      class="text-danger"
+                    >
+                      <div *ngIf="f.category.errors.required">
+                        Category is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="numQuestions">Number of Questions</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="numQuestions"
+                      name="numQuestions"
+                      formControlName="numQuestions"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.numQuestions.errors
+                      }"
+                      placeholder="Enter number of questions"
+                    />
+                    <div
+                      *ngIf="submitted && f.numQuestions.errors"
+                      class="text-danger"
+                    >
+                      <div *ngIf="f.numQuestions.errors.required">
+                        Number of Questions is required
+                      </div>
+                      <div *ngIf="f.numQuestions.errors.min">
+                        Minimum 1 question required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-0">
+                    <label>Group</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <select
+                      class="form-control"
+                      id="groupid"
+                      name="groupid"
+                      formControlName="groupid"
+                    >
+                      <option *ngFor="let grp of grpList" [ngValue]="grp._id">
+                        {{ grp.name }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="submitted && f.groupid.errors"
+                      class="text-danger"
+                    >
+                      <div *ngIf="f.groupid.errors.required">
+                        Group is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <a
+                      type="button"
+                      routerLink="../groupmastr"
+                      class="btn btn-info"
+                      >Create Group</a
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="form-check form-check-inline"
+                    style="line-height: 43px"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      formControlName="isAutoCalc"
+                      name="isAutoCalc"
+                    />
+                    <label class="form-check-label" for="inlineCheckbox1"
+                      >Auto Calc</label
+                    >
+                  </div>
+                  <div
+                    class="form-check form-check-inline"
+                    style="line-height: 43px"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      formControlName="isShowResult"
+                      name="isShowResult"
+                    />
+                    <label class="form-check-label" for="inlineCheckbox1"
+                      >Show Result</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <button
+                      (disabled)="(submitted)"
+                      type="submit"
+                      class="btn btn-info float-right"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-info">
+            <h4 class="text-capitalize text-white">Available Questions</h4>
+          </div>
+          <div class="card-body">
+            <app-datatable
+              [tableData]="questions"
+              [columns]="columns"
+              (onSelect)="onSelect($event)"
+              [tblbtns]="tblbtns"
+            ></app-datatable>
+            <!-- <table class="table table-hover">
                             <tr *ngFor="let q of  questions ; index as i">
                                 <td>{{i+1}}</td>
                                 <td>
@@ -129,9 +230,9 @@
                                 </td>
                             </tr>
                         </table> -->
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
