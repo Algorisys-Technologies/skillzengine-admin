@@ -78,7 +78,7 @@ export class EdittestComponent implements OnInit {
     isAutoCalc: [{ value: false, disabled: false }, Validators.nullValidator],
     isShowResult: [{ value: false, disabled: false }, Validators.nullValidator],
     groupid: [{ value: [], disabled: false }, Validators.required],
-    numQuestions: ["", [Validators.required, Validators.min(1)]],
+    numQuestions: ["", [Validators.required, Validators.min(0)]],
   });
 
   get f() {
