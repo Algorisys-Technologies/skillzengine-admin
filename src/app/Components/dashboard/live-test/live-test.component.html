@@ -2,12 +2,15 @@
   <div class="video-container">
     <!-- <h1>Admin</h1>
     <video id="localVideo" autoplay></video> -->
-    <h1>Participants</h1>
-    <video id="remoteVideo" autoplay></video>
-     
+    <h1 class="p-2">Participants</h1>
+    <!-- <video id="remoteVideo" autoplay></video> -->
+     <div  class="video-container">
       <div *ngFor="let stream of remoteStreams">
         <video [srcObject]="stream" autoplay></video>
+    
       </div>
+     </div>
+      
   </div>
   <!-- <div class="button-container">
     <button (click)="startCall()">Start Call</button>
